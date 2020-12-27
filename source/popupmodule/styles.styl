@@ -1,0 +1,62 @@
+// popup styles
+close-button-size = 33px
+popup-padding = 20px
+heading-content-gap = 20px
+
+popup-non-content-space = 2 * popup-padding + close-button-size + heading-content-gap
+
+
+#click-catcher
+    display: none
+    position fixed
+    width 100%
+    height 100vh
+    z-index 998
+    background-color: element-background
+
+#popup
+    border-radius: 30px
+    width 300px
+    max-height 90vh
+    box-sizing: border-box
+    padding popup-padding
+    transition transform 0.3s
+    position fixed
+    top 50%
+    left 50%
+    z-index 999
+    background-color cd-dark
+    transform: translate(-50%, 101vh) scale(0.0001) 
+
+#popup-content
+    background-color: element-background
+    padding 5px
+    overflow-y auto
+    overflow-x hidden
+    max-height: "calc(90vh - %s)" % popup-non-content-space
+    box-sizing: border-box
+    text-align:  center
+    border-radius: 3px
+
+#click-catcher.active
+    display: block
+#popup.active
+    transform: translate(-50%, -50%)
+
+#popup-heading
+    display flex
+    align-items: center
+    margin-bottom heading-content-gap
+
+#popup-title
+    flex-grow 1
+    font-weight: bold
+
+#popup-close-button
+    flex-grow: 0
+    width close-button-size
+    height close-button-size
+
+#popup-close-icon
+    width close-button-size
+    height close-button-size
