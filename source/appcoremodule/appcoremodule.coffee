@@ -15,8 +15,6 @@ wallet = null
 ethersHandler = null
 
 content = null
-bancorHandler = null
-tokenHandler = null
 
 #endregion
 
@@ -27,8 +25,6 @@ appcoremodule.initialize = () ->
     ethersHandler = allModules.ethershandlermodule
 
     content = allModules.contentmodule
-    bancorHandler = allModules.bancorhandlermodule
-    tokenHandler = allModules.tokenhandlermodule
     return
 
 
@@ -45,11 +41,8 @@ appcoremodule.startUp = ->
     log "appcoremodule.startUp"
     await registerAllContracts()
     wallet.checkConnection()
-
-    await bancorHandler.retrieveConvertibleTokens()
-    # await bancorHandler.retrieveLiquidityPools()
-
-    await tokenHandler.retrieveTokenData()
+    multiSigContractAddr = "0x814548f1d03d58959dc9DBea4c1E2c125C42Ed11"
+    
     return
 
 #endregion

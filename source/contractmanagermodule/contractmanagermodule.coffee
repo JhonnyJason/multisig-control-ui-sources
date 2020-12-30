@@ -19,8 +19,6 @@ genericABIs = require("./genericABIs")
 
 ############################################################
 #region internalProperties
-
-
 contractLibrary = {}
         
 #endregion

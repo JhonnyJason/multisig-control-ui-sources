@@ -19,6 +19,8 @@ headermodule.initialize = () ->
     walletHandler = allModules.walletmanagementmodule
     state = allModules.statemodule
     
+    headerRight.addEventListener("click", allModules.settingspagemodule.slideIn)
+    
     onAccountChanged()
     state.addOnChangeListener("account", onAccountChanged)
     

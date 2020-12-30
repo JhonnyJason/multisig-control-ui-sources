@@ -1,0 +1,11 @@
+//- settingspage structure
+extends ../slideinframemodule/slideinframe.pug
+block content
+    #deploycontractpage-content
+        h1 Provide 3 Owners        
+        input#owner0-address(type="text" value="0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef")
+        input#owner1-address(type="text" value="0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef")
+        input#owner2-address(type="text" value="0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef")
+        
+        button#deploy-button.click-button Deploy
+
