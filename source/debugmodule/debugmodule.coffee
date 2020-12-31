@@ -8,5 +8,8 @@ debugmodule.initialize = () ->
 debugmodule.modulesToDebug = 
     unbreaker: true
     configmodule: true
+    # contractpagemodule:true
+    deploycontractpagemodule: true
+    multisighandlermodule: true
 
 export default debugmodule

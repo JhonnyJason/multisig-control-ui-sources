@@ -1,5 +1,7 @@
 import abicachemodule from "./abicachemodule"
 import appcoremodule from "./appcoremodule"
+import authorizedwalletssectionmodule from "./authorizedwalletssectionmodule"
+import balancesectionmodule from "./balancesectionmodule"
 import configmodule from "./configmodule"
 import contentmodule from "./contentmodule"
 import contractmanagermodule from "./contractmanagermodule"
@@ -22,6 +24,8 @@ import walletmanagementmodule from "./walletmanagementmodule"
 Modules = {
     abicachemodule,
     appcoremodule,
+    authorizedwalletssectionmodule,
+    balancesectionmodule,
     configmodule,
     contentmodule,
     contractmanagermodule,

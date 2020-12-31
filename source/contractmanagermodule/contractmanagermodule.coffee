@@ -43,7 +43,7 @@ contractmanagermodule.addContract = (name, data) ->
         data.abi = genericABIs[data.abi]
 
     mainAddress = data.addresses["0x1"]
-    if !data.abi? 
+    if !data.abi?
         data.abi = await abiCache.getABI(mainAddress)
         if genericName? then genericABIs[genericName] = data.abi
     

@@ -51,6 +51,15 @@ applyContent = ->
     log "applyContent"
     contractAddress = newAddressInput.value
     if contractAddress.slice(0,2) != "0x" then contractAddress = "0x"+contractAddress
+
+    # before = state.get("contractAddress")
+    
+    # olog state.getState()
+
+    # olog {before}
+    # olog {contractAddress}
+    # olog {areEqual: (before == contractAddress)}
+
     state.save("contractAddress", contractAddress)
     return
 

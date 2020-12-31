@@ -34,8 +34,9 @@ contractsectionmodule.initialize = () ->
 #region internalFunctions
 syncDataFromState = ->
     log "syncDataFromState"
-    contractAddress = state.load("contractAddress")
-    statusMessage = state.load("statusMessage")
+    contractAddress = state.get("contractAddress")
+    statusMessage = state.get("statusMessage")
+    
 
     contractsectionmodule.displayContractAddress(contractAddress)
     contractsectionmodule.displayStatusMessage(statusMessage)

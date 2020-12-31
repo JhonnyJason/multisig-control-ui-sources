@@ -3,6 +3,10 @@ indexdomconnect = {name: "indexdomconnect"}
 ############################################################
 indexdomconnect.initialize = () ->
     global.deploycontractpageContent = document.getElementById("deploycontractpage-content")
+    global.owner0Address = document.getElementById("owner0-address")
+    global.owner1Address = document.getElementById("owner1-address")
+    global.owner2Address = document.getElementById("owner2-address")
+    global.deployButton = document.getElementById("deploy-button")
     global.contractpageContent = document.getElementById("contractpage-content")
     global.newAddressInput = document.getElementById("new-address-input")
     global.deployNewButton = document.getElementById("deploy-new-button")

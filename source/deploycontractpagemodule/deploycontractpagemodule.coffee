@@ -12,6 +12,7 @@ print = (arg) -> console.log(arg)
 ############################################################
 #region localMOdules
 slideinModule = null
+multiSig = null
 
 #endregion
 
@@ -20,16 +21,30 @@ slideinModule = null
 deploycontractpagemodule.initialize = () ->
     log "deploycontractpagemodule.initialize"
     slideinModule = allModules.slideinframemodule
+    multiSig = allModules.multisighandlermodule
+
     # deploycontractpageContent.
     slideinModule.wireUp(deploycontractpageContent, clearContent, applyContent)
 
     ##for debugging    
     # deploycontractpagemodule.slideIn()
-
+    deployButton.addEventListener("click", deployButtonClicked)
     return
 
 ############################################################
 #region internalFunctions
+deployButtonClicked = ->
+    log "deployButtonClicked"
+    owners = []
+    owners.push owner0Address.value
+    owners.push owner1Address.value
+    owners.push owner2Address.value
+    olog owners
+    await multiSig.deployMultiSig2of3(owners)
+    log "all done!"
+    return
+
+############################################################
 clearContent = ->
     log "clearContent"
 

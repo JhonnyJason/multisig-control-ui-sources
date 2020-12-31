@@ -46,6 +46,7 @@ provider = null
 network = null
 chainId = ""
 
+F = null
 C = null
 mC = null
 multicallHandleMap = {}
@@ -77,7 +78,8 @@ ethershandlermodule.initialize = ->
 initializeEthers = (web3Provider) ->
     log "initializeEthers"
     ethershandlermodule.providerDetected = true
-
+    
+    F = ethers.ContractFactory
     C = ethers.Contract
     provider = new ethers.providers.Web3Provider(web3Provider)
     network = await provider.getNetwork()
@@ -205,6 +207,11 @@ ethershandlermodule.contractTransaction = (name, method, args) ->
     log "ethershandlermodule.contractTransaction"
     return
 
+############################################################
+ethershandlermodule.getNewDeployedContract = (abi, code, args) ->
+    log "ethershandlermodule.createNewContract"
+    creator = new F(abi, code, provider.getSigner())
+    return creator.deploy(args)
 
 #endregion
 

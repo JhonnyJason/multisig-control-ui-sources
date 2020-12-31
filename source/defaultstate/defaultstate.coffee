@@ -1,6 +1,5 @@
-defaultstate = {
-    account: null
-    walletAvailable: false
-}
+defaultstate =
+    contractAddress: "0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+    knownContracts: []
     
 module.exports = defaultstate
