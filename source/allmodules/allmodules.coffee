@@ -2,10 +2,10 @@ import abicachemodule from "./abicachemodule"
 import appcoremodule from "./appcoremodule"
 import authorizedwalletssectionmodule from "./authorizedwalletssectionmodule"
 import balancesectionmodule from "./balancesectionmodule"
+import changecontractpagemodule from "./changecontractpagemodule"
 import configmodule from "./configmodule"
 import contentmodule from "./contentmodule"
 import contractmanagermodule from "./contractmanagermodule"
-import contractpagemodule from "./contractpagemodule"
 import contractsectionmodule from "./contractsectionmodule"
 import debugmodule from "./debugmodule"
 import deploycontractpagemodule from "./deploycontractpagemodule"
@@ -26,10 +26,10 @@ Modules = {
     appcoremodule,
     authorizedwalletssectionmodule,
     balancesectionmodule,
+    changecontractpagemodule,
     configmodule,
     contentmodule,
     contractmanagermodule,
-    contractpagemodule,
     contractsectionmodule,
     debugmodule,
     deploycontractpagemodule,

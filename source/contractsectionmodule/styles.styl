@@ -7,9 +7,17 @@
     box-sizing: border-box
     border solid 2px cd-flash
     border-radius: 5px
+    background-color: alpha(cd-flash, 0.07)
     h1
-        margin 12px 0
+        margin 0 0 10px 0
         padding 0
+
+    button
+        border solid 2px cd-flash
+        padding 10px
+        margin 0 12px
+        color cd-flash
+        width 100px
 
 #address-display
     background-color: cd-flash
@@ -19,8 +27,7 @@
     margin-top 7px
     color red
 
-#change-contract-button
-    border solid 2px cd-flash
-    padding 10px
+#contract-button-row
     margin-top 12px
-    color cd-flash
+    display flex
+    justify-content: center

@@ -10,12 +10,11 @@ print = (arg) -> console.log(arg)
 #endregion
 
 ############################################################
-#region localMOdules
+#region localModules
 slideinModule = null
 multiSig = null
 
 #endregion
-
 
 ############################################################
 deploycontractpagemodule.initialize = () ->
@@ -28,7 +27,7 @@ deploycontractpagemodule.initialize = () ->
 
     ##for debugging    
     # deploycontractpagemodule.slideIn()
-    deployButton.addEventListener("click", deployButtonClicked)
+    # deployButton.addEventListener("click", deployButtonClicked)
     return
 
 ############################################################
@@ -36,23 +35,26 @@ deploycontractpagemodule.initialize = () ->
 deployButtonClicked = ->
     log "deployButtonClicked"
     owners = []
-    owners.push owner0Address.value
-    owners.push owner1Address.value
-    owners.push owner2Address.value
-    olog owners
-    await multiSig.deployMultiSig2of3(owners)
-    log "all done!"
+    owners.push newOwner0Address.value
+    owners.push newOwner1Address.value
+    owners.push newOwner2Address.value
+    # olog owners
+    deploycontractpagemodule.slideIn()
+    multiSig.deployMultiSig2of3(owners)
+    clearContent()
     return
 
 ############################################################
 clearContent = ->
     log "clearContent"
-
+    newOwner0Address.value = "0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+    newOwner1Address.value = "0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+    newOwner2Address.value = "0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
     return
 
 applyContent = ->
     log "applyContent"
-    
+    deployButtonClicked()
     return
 
 #endregion

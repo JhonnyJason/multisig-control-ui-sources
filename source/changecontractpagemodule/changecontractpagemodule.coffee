@@ -1,8 +1,8 @@
-contractpagemodule = {name: "contractpagemodule"}
+changecontractpagemodule = {name: "changecontractpagemodule"}
 ############################################################
 #region printLogFunctions
 log = (arg) ->
-    if allModules.debugmodule.modulesToDebug["contractpagemodule"]?  then console.log "[contractpagemodule]: " + arg
+    if allModules.debugmodule.modulesToDebug["changecontractpagemodule"]?  then console.log "[changecontractpagemodule]: " + arg
     return
 ostr = (obj) -> JSON.stringify(obj, null, 4)
 olog = (obj) -> log "\n" + ostr(obj)
@@ -19,29 +19,20 @@ slideinModule = null
 
 
 ############################################################
-contractpagemodule.initialize = () ->
-    log "contractpagemodule.initialize"
+changecontractpagemodule.initialize = () ->
+    log "changecontractpagemodule.initialize"
     utl = allModules.utilmodule
     state = allModules.statemodule
     slideinModule = allModules.slideinframemodule
-    # contractpageContent.
-    slideinModule.wireUp(contractpageContent, clearContent, applyContent)
+    # changecontractpageContent.
+    slideinModule.wireUp(changecontractpageContent, clearContent, applyContent)
 
-    deployNewButton.addEventListener("click", deployNewButtonClicked)
     ##for debugging    
-    # contractpagemodule.slideIn()
+    # changecontractpagemodule.slideIn()
     return
 
 ############################################################
 #region internalFunctions
-deployNewButtonClicked = ->
-    log "deployNewButtonClicked"
-    clearContent()
-    contractpagemodule.slideOut()
-    allModules.deploycontractpagemodule.slideIn()
-    return
-
-############################################################
 clearContent = ->
     log "clearContent"
     newAddressInput.value = "0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
@@ -67,16 +58,16 @@ applyContent = ->
 
 ############################################################
 #region exposedFunctions
-contractpagemodule.slideOut = ->
-    log "contractpagemodule.slideOut"
-    slideinModule.slideoutForContentElement(contractpageContent)
+changecontractpagemodule.slideOut = ->
+    log "changecontractpagemodule.slideOut"
+    slideinModule.slideoutForContentElement(changecontractpageContent)
     return
 
-contractpagemodule.slideIn = ->
-    log "contractpagemodule.slideIn"
-    slideinModule.slideinForContentElement(contractpageContent)
+changecontractpagemodule.slideIn = ->
+    log "changecontractpagemodule.slideIn"
+    slideinModule.slideinForContentElement(changecontractpageContent)
     return
 
 #endregion
 
-module.exports = contractpagemodule
+module.exports = changecontractpagemodule

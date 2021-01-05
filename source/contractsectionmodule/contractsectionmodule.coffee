@@ -10,6 +10,7 @@ print = (arg) -> console.log(arg)
 #endregion
 
 ############################################################
+utl = null
 state  = null
 
 ############################################################
@@ -18,30 +19,51 @@ addressContent = null
 ############################################################
 contractsectionmodule.initialize = () ->
     log "contractsectionmodule.initialize"
+    utl = allModules.utilmodule
     state = allModules.statemodule
 
-    changeContractButton.addEventListener("click", allModules.contractpagemodule.slideIn)
+    changeContractButton.addEventListener("click", allModules.changecontractpagemodule.slideIn)
+    deployNewButton.addEventListener("click", allModules.deploycontractpagemodule.slideIn)
 
     addressContent = addressDisplay.getElementsByClassName("display-frame-content")[0]
     addressDisplay.addEventListener("click", addressDisplayClicked)
 
     syncDataFromState()
-    state.addOnChangeListener("contractAddress", syncDataFromState)
-    state.addOnChangeListener("statusMessage", syncDataFromState)
+    state.addOnChangeListener("contractAddress", syncAddressFromState)
+    state.addOnChangeListener("statusMessage", syncStatusFromState)
+    state.addOnChangeListener("type", syncTypeFromState)
     return
 
 ############################################################
 #region internalFunctions
 syncDataFromState = ->
-    log "syncDataFromState"
-    contractAddress = state.get("contractAddress")
-    statusMessage = state.get("statusMessage")
-    
+    syncTypeFromState()
+    syncAddressFromState()
+    return
 
-    contractsectionmodule.displayContractAddress(contractAddress)
+############################################################
+#region individualSyncFunctions
+syncStatusFromState = ->
+    log "syncStatusFromState"
+    statusMessage = state.get("statusMessage")
     contractsectionmodule.displayStatusMessage(statusMessage)
     return
 
+syncAddressFromState = ->
+    log "syncAddressFromState"
+    contractAddress = state.get("contractAddress")
+    contractsectionmodule.displayContractAddress(contractAddress)
+    return
+
+syncTypeFromState = ->
+    log "syncTypeFromState"
+    type = state.get("type")
+    contractsectionmodule.displayType(type)
+    return
+
+#endregion
+
+############################################################
 addressDisplayClicked = ->
     log "addressDisplayClicked"
     utl.copyToClipboard(addressContent.textContent)
@@ -59,6 +81,12 @@ contractsectionmodule.displayStatusMessage = (statusMessage) ->
     log "contractsectionmodule.displayStatusMessage"
     statusMessageDisplay.textContent = statusMessage
     return
+
+contractsectionmodule.displayType = (type) ->
+    log "contractsectionmodule.type"
+    contractType.textContent = type
+    return
+
 #endregion
 
 module.exports = contractsectionmodule

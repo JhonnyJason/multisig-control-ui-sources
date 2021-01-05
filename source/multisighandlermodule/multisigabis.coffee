@@ -2,7 +2,58 @@
 multisigabis = {}
 
 ############################################################
-multisigabis.multiSig2of3 = [
+multisigabis.NoType = [
+    {
+      "name": "type",
+      "outputs": [
+        {
+          "type": "string",
+          "name": ""
+        }
+      ],
+      "inputs": [],
+      "stateMutability": "view",
+      "type": "function",
+      "gas": 4609,
+      "constant": true
+    },
+    {
+      "name": "isAuthorized",
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ],
+      "inputs": [
+        {
+          "type": "address",
+          "name": "arg0"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function",
+      "gas": 1546,
+      "constant": true
+    },
+    {
+      "name": "isComplete",
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ],
+      "inputs": [],
+      "stateMutability": "view",
+      "type": "function",
+      "gas": 1154,
+      "constant": true
+    }
+]
+
+############################################################
+multisigabis.MultiSig2of3 = [
     {
       "name": "EtherSent",
       "inputs": [
@@ -299,6 +350,6 @@ multisigabis.multiSig2of3 = [
       "gas": 1391,
       "constant": true
     }
-  ]
+]
 
 module.exports = multisigabis

@@ -9,9 +9,19 @@ olog = (obj) -> log "\n" + ostr(obj)
 print = (arg) -> console.log(arg)
 #endregion
 
+# ethersHandler
+############################################################
+owners = []
+
 ############################################################
 authorizedwalletssectionmodule.initialize = () ->
     log "authorizedwalletssectionmodule.initialize"
+    checkAllOwners()
     return
     
+checkAllOwners = ->
+    log "checkAllOwners"
+    
+    return
+
 module.exports = authorizedwalletssectionmodule
