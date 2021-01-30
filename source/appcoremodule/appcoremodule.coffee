@@ -12,7 +12,7 @@ print = (arg) -> console.log(arg)
 ############################################################
 #region modules
 state = null
-wallet = null
+walletManager = null
 ethersHandler = null
 
 content = null
@@ -23,7 +23,7 @@ content = null
 appcoremodule.initialize = () ->
     log "appcoremodule.initialize"
     state = allModules.statemodule
-    wallet = allModules.walletmanagementmodule
+    walletManager = allModules.walletmanagementmodule
     ethersHandler = allModules.ethershandlermodule
 
     content = allModules.contentmodule
@@ -42,11 +42,9 @@ registerAllContracts = ->
 appcoremodule.startUp = ->
     log "appcoremodule.startUp"
     await registerAllContracts()
-    wallet.checkConnection()
-    # multiSigContractAddr = "0x814548f1d03d58959dc9DBea4c1E2c125C42Ed11"
-    # state.setSilently("contractAddress", multiSigContractAddr)
+    walletManager.checkConnection()
+    ## trigger check of our current contractAddress
     state.callOutChange("contractAddress")
-    
     return
 
 #endregion

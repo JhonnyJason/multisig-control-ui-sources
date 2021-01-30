@@ -186,8 +186,8 @@ setCorrectStatusMessage = ->
 multisighandlermodule.deployMultiSig2of3 = (owners) ->
     log "multisighandlermodule.deployMultiSig2of3"
     
-    abi = abis.multiSig2of3
-    code = byteCodes.multiSig2of3
+    abi = abis.MultiSig2of3
+    code = byteCodes.MultiSig2of3
 
     contract = await ethersHandler.getNewDeployedContract(abi, code, owners)
     
@@ -204,7 +204,3 @@ multisighandlermodule.deployMultiSig2of3 = (owners) ->
 
 
 module.exports = multisighandlermodule
-
-# 0x6b61daf1acf10cfe0603019cfe2fbcf99da38a5e
-# 0x559bbaa9e0ccdf98871aeebdfae6626026fe1acd
-# 0x8d9708f3f514206486d7e988533f770a16d074a7

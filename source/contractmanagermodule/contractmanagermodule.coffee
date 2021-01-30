@@ -12,7 +12,6 @@ print = (arg) -> console.log(arg)
 ############################################################
 #region modules
 abiCache = null
-state = null
 
 genericABIs = require("./genericABIs")
 #endregion
@@ -27,7 +26,6 @@ contractLibrary = {}
 contractmanagermodule.initialize = ->
     log "contractmanagermodule.initialize"
     abiCache = allModules.abicachemodule
-    state = allModules.statemodul
     return
     
 ############################################################

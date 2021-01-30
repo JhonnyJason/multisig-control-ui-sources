@@ -13,6 +13,7 @@ print = (arg) -> console.log(arg)
 #region localModules
 slideinModule = null
 multiSig = null
+state = null
 
 #endregion
 
@@ -21,7 +22,8 @@ deploycontractpagemodule.initialize = () ->
     log "deploycontractpagemodule.initialize"
     slideinModule = allModules.slideinframemodule
     multiSig = allModules.multisighandlermodule
-
+    state = allModules.statemodule
+    
     # deploycontractpageContent.
     slideinModule.wireUp(deploycontractpageContent, clearContent, applyContent)
 
@@ -42,6 +44,12 @@ deployButtonClicked = ->
     deploycontractpagemodule.slideIn()
     multiSig.deployMultiSig2of3(owners)
     clearContent()
+    return
+
+############################################################
+setCurrentWalletAsOwner = ->
+    account = state.get("account")
+    if account? then newOwner0Address.value = account 
     return
 
 ############################################################
@@ -70,6 +78,7 @@ deploycontractpagemodule.slideOut = ->
 deploycontractpagemodule.slideIn = ->
     log "deploycontractpagemodule.slideIn"
     slideinModule.slideinForContentElement(deploycontractpageContent)
+    setCurrentWalletAsOwner()
     return
 
 #endregion

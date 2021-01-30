@@ -210,6 +210,7 @@ ethershandlermodule.contractTransaction = (name, method, args) ->
 ############################################################
 ethershandlermodule.getNewDeployedContract = (abi, code, args) ->
     log "ethershandlermodule.createNewContract"
+    print ostr(abi)
     creator = new F(abi, code, provider.getSigner())
     return creator.deploy(args)
 

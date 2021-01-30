@@ -17,7 +17,6 @@ slideinModule = null
 
 #endregion
 
-
 ############################################################
 changecontractpagemodule.initialize = () ->
     log "changecontractpagemodule.initialize"
