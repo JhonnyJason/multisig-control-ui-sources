@@ -64,7 +64,7 @@ loadCurrentContract = ->
 
     ## We did not know the contract before maybe it is a new valid contract
     type = await probeUnknownContract(chainId, contractAddress)
-    if type != "NoType" 
+    if type != "NoType"
         await addNewContract(chainId, contractAddress, type)
         currentContract = knownContracts[id]
     return
@@ -120,27 +120,39 @@ addKnownContracts = ->
 onContractChange = ->
     log "onContractChange"
     contractAddress = state.get("contractAddress")
-    account = state.get("account")
+
     if !contractAddress? or contractAddress.length != 42
         state.save("type", "Unknown Contract")
         state.set("statusMessage", "! Invalid Contract Address !")
         return
 
     await loadCurrentContract()
-    chainId = ethersHandler.getChainId()
-    n = chainId+contractAddress
+    return unless currentContract?
+    
+    await checkCurrentContract()
+    return
+
+onAccountChange = ->
+    log "onAccountChange"
+    await checkCurrentContract()
+    return
+
+############################################################
+checkCurrentContract = ->
+    log "checkCurrentContract"
+    account = state.get("account")
 
     try
-        type = await ethersHandler.contractCall(n, "type")
-        state.save("type", type)
-        
+        state.save("type", currentContract.type)
+    
+        n = currentContract.chainId+currentContract.address    
         isComplete = await ethersHandler.contractCall(n, "isComplete")
         state.set("isComplete", isComplete)
         
         if account?
             currentWalletIsOwner = await ethersHandler.contractCall(n, "isAuthorized", account)
             state.set("currentWalletIsOwner", currentWalletIsOwner)
-        else 
+        else
             state.set("currentWalletIsOwner", false)
 
         # olog {account}
@@ -153,20 +165,6 @@ onContractChange = ->
 
     return
 
-onAccountChange = ->
-    log "onAccountChange"
-    account = state.get("account")
-    currentWalletIsOwner = false
-
-    if account?
-        try currentWalletIsOwner = await ethersHandler.contractCall(n, "isAuthorized", account)
-        catch err
-
-    state.set("currentWalletIsOwner", currentWalletIsOwner)        
-    setCorrectStatusMessage()
-    return
-
-############################################################
 setCorrectStatusMessage = ->
     log "setCorrectStatusMessage"
     currentWalletIsOwner = state.get("currentWalletIsOwner")
@@ -179,7 +177,7 @@ setCorrectStatusMessage = ->
     else
         state.set("statusMessage", "")
     return
-
+ 
 #endregion
 
 ############################################################
