@@ -65,18 +65,18 @@ loadCurrentContract = ->
     ## We did not know the contract before maybe it is a new valid contract
     type = await probeUnknownContract(chainId, contractAddress)
     if type != "NoType"
-        await addNewContract(chainId, contractAddress, type)
+        await addNewContract(chainId, contractAddress, type, [])
         currentContract = knownContracts[id]
     return
 
-addNewContract = (chainId, address, type) ->
+addNewContract = (chainId, address, type, owners) ->
     log "addNewContract"
     id = chainId + address
     contract = {}
     contract.chainId = chainId
     contract.address = address
     contract.type = type
-    contract.owners = []
+    contract.owners = owners
     knownContracts[id] = contract
     state.save("knownContracts", knownContracts)
     ## also add it for contract manager
@@ -183,19 +183,15 @@ setCorrectStatusMessage = ->
 ############################################################
 multisighandlermodule.deployMultiSig2of3 = (owners) ->
     log "multisighandlermodule.deployMultiSig2of3"
-    
-    abi = abis.MultiSig2of3
-    code = byteCodes.MultiSig2of3
+    type = "MultiSig2of3"
 
+    abi = abis[type]
+    code = byteCodes[type]
     contract = await ethersHandler.getNewDeployedContract(abi, code, owners)
     
-    # name = "myMultiSig2of3"
-    # data = {}
-    # data.abi = abi
-    # data.addresses = {}
-    # data.addresses[ethersHandler.chainId] = contract.address
-    
-    # await contractManager.addContract(name, data)
+    chainId = ethersHandler.getChainId()
+    addr = contract.address
+    await addNewContract(chainId, addr, type, owners)
 
     state.save("contractAddress", contract.address)
     return
