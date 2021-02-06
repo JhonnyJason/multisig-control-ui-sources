@@ -11,5 +11,6 @@ debugmodule.modulesToDebug =
     # contractpagemodule:true
     deploycontractpagemodule: true
     multisighandlermodule: true
+    statemodule: true
 
 export default debugmodule

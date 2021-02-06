@@ -40,14 +40,16 @@ touchCache = (address) ->
     cacheEntries.length = maxCacheSize
     
     if typeof toRemove == "string" then delete addressABIMap[toRemove]
-    state.save("addressABIMap", addressABIMap)        
+    state.save("addressABIMap")        
     return
 
 ############################################################
 abicachemodule.getABI = (address) ->
     if addressABIMap[address]? then return addressABIMap[address]
-    addressABIMap[address] = await network.getABI(address)
-    touchCache(address)
+    try
+        addressABIMap[address] = await network.getABI(address)
+        touchCache(address)
+    catch err then log err
     return addressABIMap[address]
 
 module.exports = abicachemodule

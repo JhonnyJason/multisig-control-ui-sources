@@ -33,10 +33,9 @@ multisighandlermodule.initialize = ->
     state = allModules.statemodule
 
     knownContracts = state.load("knownContracts")
+    olog {knownContracts}
     if !knownContracts? then knownContracts = {}
     state.save("knownContracts", knownContracts, true)
-    hasChanged = (v1,v2) -> JSON.stringify(v1) != JSON.stringify(v2)
-    state.setChangeDetectionFunction("knownContracts", hasChanged)
 
     await addKnownContracts()
     await loadCurrentContract()
@@ -67,10 +66,13 @@ loadCurrentContract = ->
     if type != "NoType"
         await addNewContract(chainId, contractAddress, type, [])
         currentContract = knownContracts[id]
+        olog {currentContract}
     return
 
 addNewContract = (chainId, address, type, owners) ->
     log "addNewContract"
+    return unless chainId and address
+
     id = chainId + address
     contract = {}
     contract.chainId = chainId
@@ -78,7 +80,11 @@ addNewContract = (chainId, address, type, owners) ->
     contract.type = type
     contract.owners = owners
     knownContracts[id] = contract
-    state.save("knownContracts", knownContracts)
+    # olog {knownContracts}
+    # olog {contract}
+
+    state.save("knownContracts")
+    # log "I should've saved the knownContracts..."
     ## also add it for contract manager
     data = {}
     data.abi = abis[type]
@@ -188,7 +194,8 @@ multisighandlermodule.deployMultiSig2of3 = (owners) ->
     abi = abis[type]
     code = byteCodes[type]
     contract = await ethersHandler.getNewDeployedContract(abi, code, owners)
-    
+    await contract.deployTransaction.wait()
+
     chainId = ethersHandler.getChainId()
     addr = contract.address
     await addNewContract(chainId, addr, type, owners)
