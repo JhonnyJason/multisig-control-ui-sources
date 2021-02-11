@@ -88,8 +88,6 @@ checkOwnerAuthority = (index) ->
     catch err
         log err
         el.classList.remove("authorized")
-
-
     return
 
 ############################################################
