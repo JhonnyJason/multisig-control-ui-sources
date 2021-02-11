@@ -10,8 +10,13 @@ print = (arg) -> console.log(arg)
 #endregion
 
 ############################################################
-balancesectionmodule.initialize = () ->
+balancesectionmodule.initialize = ->
     log "balancesectionmodule.initialize"
     return
-    
+
+############################################################
+balancesectionmodule.checkBalances = ->
+    log "balancesectionmodule.checkBalances"
+    return
+
 module.exports = balancesectionmodule

@@ -15,8 +15,10 @@ byteCodes = require "./multisigbytecodes"
 abis = require "./multisigabis"
 
 ############################################################
+authorizedWallets = null
 contractManager = null
 ethersHandler = null
+balances = null
 state = null
 
 #endregion
@@ -28,17 +30,15 @@ knownContracts = null
 ############################################################
 multisighandlermodule.initialize = ->
     log "multisighandlermodule.initialize"
+    authorizedWallets = allModules.authorizedwalletssectionmodule
     contractManager = allModules.contractmanagermodule
     ethersHandler = allModules.ethershandlermodule
+    balances = allModules.balancesectionmodule
     state = allModules.statemodule
 
     knownContracts = state.load("knownContracts")
-    olog {knownContracts}
     if !knownContracts? then knownContracts = {}
     state.save("knownContracts", knownContracts, true)
-
-    await addKnownContracts()
-    await loadCurrentContract()
 
     state.addOnChangeListener("contractAddress", onContractChange)
     state.addOnChangeListener("account", onAccountChange)
@@ -72,6 +72,7 @@ loadCurrentContract = ->
 addNewContract = (chainId, address, type, owners) ->
     log "addNewContract"
     return unless chainId and address
+    if owners.length == 0 then owners = getFakeOwnersForType(type)
 
     id = chainId + address
     contract = {}
@@ -107,12 +108,30 @@ probeUnknownContract = (chainId, address) ->
     catch err then return "NoType"
     return
 
+getFakeOwnersForType = (type) ->
+    switch type
+        when "MultiSig2of3" then return getFakeOwners(3)
+        else getFakeOwners(3)
+    return
+
+getFakeOwners = (number) ->
+    return unless number > 0
+    
+    result = []
+    result.push state.get("account")
+    number--
+
+    while number > 0
+        result.push "0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+        number--
+    return result
+
 ############################################################
 addKnownContracts = ->
     log "addKnownContracts"
     promises = []
 
-    for contract,id of knownContracts
+    for id,contract of knownContracts
         data = {}
         data.abi = abis[contract.type]
         data.addresses = {}
@@ -132,9 +151,7 @@ onContractChange = ->
         state.set("statusMessage", "! Invalid Contract Address !")
         return
 
-    await loadCurrentContract()
-    return unless currentContract?
-    
+    await loadCurrentContract()    
     await checkCurrentContract()
     return
 
@@ -147,10 +164,16 @@ onAccountChange = ->
 checkCurrentContract = ->
     log "checkCurrentContract"
     account = state.get("account")
+    
+    olog {currentContract}
+
+    if currentContract? 
+        authorizedWallets.setOwners(currentContract.owners)
+        balances.checkBalances()
 
     try
         state.save("type", currentContract.type)
-    
+
         n = currentContract.chainId+currentContract.address    
         isComplete = await ethersHandler.contractCall(n, "isComplete")
         state.set("isComplete", isComplete)
@@ -166,6 +189,7 @@ checkCurrentContract = ->
         
         setCorrectStatusMessage()    
     catch err
+        log err
         state.save("type", "Unknown Contract")
         state.set("statusMessage", "")
 
@@ -187,6 +211,17 @@ setCorrectStatusMessage = ->
 #endregion
 
 ############################################################
+multisighandlermodule.registerContracts = ->
+    log "multisighandlermodule.registerContracts"
+    await addKnownContracts()
+    return
+
+multisighandlermodule.checkAddressAuthority = (address) ->
+    n = currentContract.chainId+currentContract.address
+    isAuthorized = await ethersHandler.contractCall(n, "isAuthorized", address)
+    throw new Error(address+" was not authorized!") unless isAuthorized
+    return
+
 multisighandlermodule.deployMultiSig2of3 = (owners) ->
     log "multisighandlermodule.deployMultiSig2of3"
     type = "MultiSig2of3"
@@ -197,11 +232,14 @@ multisighandlermodule.deployMultiSig2of3 = (owners) ->
     await contract.deployTransaction.wait()
 
     chainId = ethersHandler.getChainId()
-    addr = contract.address
+    addr = contract.address.toLowerCase()
     await addNewContract(chainId, addr, type, owners)
 
-    state.save("contractAddress", contract.address)
+    state.save("contractAddress", addr)
     return
 
 
 module.exports = multisighandlermodule
+
+#   "address": "0x8d9708f3f514206486d7e988533f770a16d074a7",
+#   "address": "0xe179e1ba053be567b0f3f4a85e961fbc9a7b403e",

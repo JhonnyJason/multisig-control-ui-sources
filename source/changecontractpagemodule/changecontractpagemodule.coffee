@@ -18,7 +18,7 @@ slideinModule = null
 #endregion
 
 ############################################################
-changecontractpagemodule.initialize = () ->
+changecontractpagemodule.initialize = ->
     log "changecontractpagemodule.initialize"
     utl = allModules.utilmodule
     state = allModules.statemodule
@@ -39,7 +39,7 @@ clearContent = ->
 
 applyContent = ->
     log "applyContent"
-    contractAddress = newAddressInput.value
+    contractAddress = newAddressInput.value.toLowerCase()
     if contractAddress.slice(0,2) != "0x" then contractAddress = "0x"+contractAddress
 
     # before = state.get("contractAddress")
@@ -50,8 +50,39 @@ applyContent = ->
     # olog {contractAddress}
     # olog {areEqual: (before == contractAddress)}
 
+    newAddressInput.value = "0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
     state.save("contractAddress", contractAddress)
     return
+
+############################################################
+displayKnownContracts = ->
+    log "displayKnownContracts"
+    knownContracts = state.get("knownContracts")
+    chainId = allModules.ethershandlermodule.getChainId()
+    html = ""
+    for id,contract of knownContracts when contract.chainId == chainId
+        html += getContractHTML(contract, id)
+    if !html then html = "<p>No Known Contracts on this ChainId...</p>"
+    knownContractsContainer.innerHTML = html
+
+    elements = document.getElementsByClassName("known-contract")
+    el.addEventListener("click", knownContractClicked) for el in elements
+    return
+
+getContractHTML = (contract, id) ->
+    html = '<div class="known-contract"'
+    html += ' contract-id="'+id+'">'
+    html += contract.address+'</div>'
+    return html
+
+knownContractClicked = (evt) ->
+    log "knownContractClicked"
+    id = evt.target.getAttribute("contract-id")
+    knownContracts = state.get("knownContracts")
+    contract = knownContracts[id]
+    state.save("contractAddress", contract.address)
+    changecontractpagemodule.slideOut()
+    return    
 
 #endregion
 
@@ -65,6 +96,7 @@ changecontractpagemodule.slideOut = ->
 changecontractpagemodule.slideIn = ->
     log "changecontractpagemodule.slideIn"
     slideinModule.slideinForContentElement(changecontractpageContent)
+    displayKnownContracts()
     return
 
 #endregion

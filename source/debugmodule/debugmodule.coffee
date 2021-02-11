@@ -7,10 +7,11 @@ debugmodule.initialize = () ->
 
 debugmodule.modulesToDebug = 
     unbreaker: true
-    configmodule: true
+    authorizedwalletssectionmodule:  true
+    # configmodule: true
     # contractpagemodule:true
-    deploycontractpagemodule: true
+    # deploycontractpagemodule: true
     multisighandlermodule: true
-    statemodule: true
+    # statemodule: true
 
 export default debugmodule

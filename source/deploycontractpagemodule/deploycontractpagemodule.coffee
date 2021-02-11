@@ -37,9 +37,9 @@ deploycontractpagemodule.initialize = () ->
 deployButtonClicked = ->
     log "deployButtonClicked"
     owners = []
-    owners.push newOwner0Address.value
-    owners.push newOwner1Address.value
-    owners.push newOwner2Address.value
+    owners.push newOwner0Address.value.toLowerCase()
+    owners.push newOwner1Address.value.toLowerCase()
+    owners.push newOwner2Address.value.toLowerCase()
     # olog owners
     deploycontractpagemodule.slideIn()
     multiSig.deployMultiSig2of3(owners)
